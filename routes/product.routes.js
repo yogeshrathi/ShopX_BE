@@ -13,5 +13,5 @@ module.exports = function (app) {
         "/api/products/add", controller.addProduct
     );
 
-    app.get("/api/products/", controller.getProducts);
+    app.get("/api/products", controller.getProducts);
 };

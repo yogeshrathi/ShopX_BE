@@ -1,43 +1,41 @@
 const config = require("../config/auth.config");
 const db = require("../models");
-const Product = db.product;
+const Banner = db.banner;
 
 var jwt = require("jsonwebtoken");
 
-exports.addProduct = (req, res) => {
-    const product = new Product({
-        product_name: req.body.product_name,
-        price: req.body.price,
+exports.addBanner = (req, res) => {
+    const banner = new Banner({
+        banner_name: req.body.banner_name,
         imageUrl: req.body.imageUrl,
         description: req.body.description,
         isAvailable: req.body.isAvailable
     });
 
-    product.save((err, user) => {
+    banner.save((err, user) => {
         if (err) {
             res.status(500).send({ message: err });
             return;
         } else {
-            res.send({ message: "Product added successfully!" });
+            res.send({ message: "Banner added successfully!" });
         }
     });
 }
 
-exports.getProducts = (req, res) => {
-    Product.find()
-     .exec((err, products) => {
-         console.log(products);
+exports.getBanners = (req, res) => {
+    Banner.find()
+     .exec((err, banners) => {
             if (err) {
                 res.status(500).send({ message: err });
                 return;
             }
 
-            if (!products) {
-                return res.status(404).send({ message: "No products found." });
+            if (!banner) {
+                return res.status(404).send({ message: "No banner found." });
             }
 
             res.status(200).send({
-                data: products
+                data: banner
             });
         });
 };
