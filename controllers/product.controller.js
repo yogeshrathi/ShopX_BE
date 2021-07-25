@@ -26,7 +26,6 @@ exports.addProduct = (req, res) => {
 exports.getProducts = (req, res) => {
     Product.find()
      .exec((err, products) => {
-         console.log(products);
             if (err) {
                 res.status(500).send({ message: err });
                 return;

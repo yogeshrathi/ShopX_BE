@@ -27,7 +27,7 @@ exports.getBanners = (req, res) => {
      .exec((err, banners) => {
             if (err) {
                 res.status(500).send({ message: err });
-                return;
+                return;3
             }
 
             if (!banner) {
