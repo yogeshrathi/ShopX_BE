@@ -6,11 +6,11 @@ var jwt = require("jsonwebtoken");
 
 exports.addProduct = (req, res) => {
     const product = new Product({
-        product_name: req.body.product_name,
-        price: req.body.price,
-        imageUrl: req.body.imageUrl,
-        description: req.body.description,
-        isAvailable: req.body.isAvailable
+        product_name: req.body.payload.product_name,
+        price: req.body.payload.price,
+        imageUrl: req.body.payload.imageUrl,
+        description: req.body.payload.description,
+        isAvailable: req.body.payload.isAvailable ? req.body.payload.isAvailable : true
     });
 
     product.save((err, user) => {
