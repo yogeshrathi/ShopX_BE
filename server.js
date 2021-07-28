@@ -57,7 +57,7 @@ function initial() {
   }
 
 db.mongoose
-  .connect(`mongodb://${dbConfig.HOST}:${dbConfig.PORT}/${dbConfig.DB}`, {
+  .connect(`mongodb+srv://yogesh:jATkYV6amM7JrNUB@cluster0.g0loj.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`, {
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
@@ -77,8 +77,11 @@ app.get("/", (req, res) => {
 
 
 // routes
-require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./routes/auth.routes')(app);
+require('./routes/user.routes')(app);
+require('./routes/product.routes')(app);
+require('./routes/banner.routes')(app);
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

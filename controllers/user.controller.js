@@ -1,15 +1,44 @@
-exports.allAccess = (req, res) => {
-    res.status(200).send("Public Content.");
-  };
-  
-  exports.userBoard = (req, res) => {
-    res.status(200).send("User Content.");
-  };
-  
-  exports.adminBoard = (req, res) => {
-    res.status(200).send("Admin Content.");
-  };
-  
-  exports.moderatorBoard = (req, res) => {
-    res.status(200).send("Moderator Content.");
-  };
+const config = require("../config/auth.config");
+const db = require("../models");
+const User = db.user;
+
+exports.getUser = (req, res) => {
+    User.findOne({
+        _id: req.body.userid
+    })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            }
+
+            res.status(200).send({
+                id: user._id,
+                username: user.username,
+                email: user.email,
+            });
+        });
+};
+
+exports.changePassword = (req, res) => {
+    User.findOne({
+        _id: req.body.userid
+    })
+        .exec((err, user) => {
+            if (err) {
+                res.status(500).send({ message: err });
+                return;
+            }
+
+            if (!user) {
+                return res.status(404).send({ message: "User Not found." });
+            } else{
+              return res.status(200);
+            }
+        });
+};
+
