@@ -1,5 +1,6 @@
 const db = require("../models");
 const Cart = db.cart;
+const mongoose = require("mongoose");
 
 exports.addProductToCart = (req, res) => {
     Cart.findOne({
@@ -9,20 +10,20 @@ exports.addProductToCart = (req, res) => {
             res.status(500).send({ message: err });
             return;
         }
-        if(cart?.products){
-            cart.products = req.products
+        if (cart?.products) {
+            cart.products = req.body
             cart.save((err, userC) => {
                 if (err) {
                     res.status(500).send({ message: err });
                     return;
                 } else {
-                    res.send({ message: "Cart updated successfully!" });   
-                }   
+                    res.send({ message: "Cart updated successfully!" });
+                }
             })
-        } else{
+        } else {
             let userCart = new Cart({
                 user: req.userId,
-                products: req.products
+                products: req.body
             });
 
             userCart.save((err, usersCart) => {
@@ -30,9 +31,30 @@ exports.addProductToCart = (req, res) => {
                     res.status(500).send({ message: err });
                     return;
                 } else {
-                    res.send({ message: "Cart updated successfully!" });   
+                    res.send({ message: "Cart added successfully!" });
                 }
             })
-        } 
+        }
     })
 };
+
+exports.getCart = (req, res) => {
+    let id = mongoose.Types.ObjectId(req.userId);
+    Cart.aggregate([
+        { $match: { "user": id } },
+        {
+            $lookup: {
+                from: 'products',
+                localField: 'products._id',
+                foreignField: '_id',
+                as: 'product'
+            }
+        }
+    ]).exec((err, cart) => {
+        if (err) {
+            res.status(500).send({ message: err });
+            return;
+        } 
+        res.send(cart);
+    });
+}

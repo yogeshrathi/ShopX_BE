@@ -10,5 +10,6 @@ module.exports = function (app) {
         next();
     });
 
-    app.post("/api/cart", authJwt.verifyToken, controller.signin);
+    app.post("/api/cart", authJwt.verifyToken, controller.addProductToCart);
+    app.get("/api/cart", authJwt.verifyToken, controller.getCart);
 };
